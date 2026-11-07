@@ -1,0 +1,66 @@
+<div class="auth-page">
+  <aside class="brand">
+    <div class="logo">Nutri<span>Plan</span></div>
+    <h2>Your smart weekly meal planner.</h2>
+    <ul>
+      <li>Personal calorie &amp; macro targets</li>
+      <li>A full week of meals in one click</li>
+      <li>Shopping list generated for you</li>
+    </ul>
+  </aside>
+
+  <main class="form-side">
+    <div class="card">
+      <h1>Welcome back</h1>
+      <p class="subtitle">Log in to continue your plan.</p>
+
+      @if (error()) {
+        <div class="alert" role="alert">{{ error() }}</div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="field">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            placeholder="you@example.com"
+            [class.invalid]="invalid('email')"
+          />
+          @if (invalid('email')) {
+            <span class="field-error">
+              @if (form.controls.email.hasError('required')) {
+                Email is required.
+              } @else {
+                Please enter a valid email.
+              }
+            </span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            autocomplete="current-password"
+            placeholder="Your password"
+            [class.invalid]="invalid('password')"
+          />
+          @if (invalid('password')) {
+            <span class="field-error">Password is required.</span>
+          }
+        </div>
+
+        <button class="btn btn-primary" type="submit" [disabled]="loading()">
+          {{ loading() ? 'Logging in…' : 'Log in' }}
+        </button>
+      </form>
+
+      <p class="switch">New to NutriPlan? <a routerLink="/register">Create an account</a></p>
+    </div>
+  </main>
+</div>

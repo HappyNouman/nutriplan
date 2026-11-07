@@ -1,0 +1,33 @@
+<header class="topbar">
+  <div class="logo">Nutri<span>Plan</span></div>
+  <div class="user">
+    <span class="avatar">{{ firstName().charAt(0) }}</span>
+    <span class="name">{{ auth.user()?.fullName }}</span>
+    <button class="btn btn-ghost" type="button" (click)="auth.logout()">Log out</button>
+  </div>
+</header>
+
+<main class="content">
+  <section class="hero">
+    <h1>Hi {{ firstName() }} 👋</h1>
+    <p>You're logged in. Your account is ready.</p>
+  </section>
+
+  <section class="grid">
+    <article class="card">
+      <h2>Your account</h2>
+      <dl>
+        <dt>Name</dt>
+        <dd>{{ auth.user()?.fullName }}</dd>
+        <dt>Email</dt>
+        <dd>{{ auth.user()?.email }}</dd>
+      </dl>
+    </article>
+
+    <article class="card next">
+      <h2>Next step</h2>
+      <p>Set up your health profile (age, height, weight, goal) so we can calculate your daily calories.</p>
+      <span class="badge">Coming soon</span>
+    </article>
+  </section>
+</main>

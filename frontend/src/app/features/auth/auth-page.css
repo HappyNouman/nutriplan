@@ -1,0 +1,107 @@
+/* Shared layout for the Login and Register pages: brand panel on the left, form on the right. */
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.brand {
+  background: linear-gradient(150deg, var(--green-900), var(--green-600));
+  color: #fff;
+  padding: 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+}
+
+.logo {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.logo span {
+  color: #bbf7d0;
+}
+
+.brand h2 {
+  font-size: 2.25rem;
+  line-height: 1.2;
+  margin: 0;
+  max-width: 420px;
+}
+
+.brand ul {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: grid;
+  gap: 12px;
+}
+
+.brand li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.95;
+}
+
+.brand li::before {
+  content: '✓';
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.form-side {
+  display: grid;
+  place-items: center;
+  padding: 40px 24px;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+}
+
+.card h1 {
+  margin: 0 0 4px;
+  font-size: 1.75rem;
+}
+
+.subtitle {
+  margin: 0 0 28px;
+  color: var(--text-muted);
+}
+
+.switch {
+  margin-top: 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.925rem;
+}
+
+@media (max-width: 860px) {
+  .auth-page {
+    grid-template-columns: 1fr;
+  }
+
+  .brand {
+    padding: 32px 24px;
+    gap: 12px;
+  }
+
+  .brand h2 {
+    font-size: 1.5rem;
+  }
+
+  .brand ul {
+    display: none;
+  }
+}
