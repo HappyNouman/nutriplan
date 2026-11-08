@@ -2,11 +2,13 @@ import { DecimalPipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
+import { MEAL_TYPE_LABELS, PlanDay, todayIso } from '../plan/plan.models';
+import { PlanService } from '../plan/plan.service';
 import { CalorieSummary } from '../profile/calorie-summary/calorie-summary';
 import { GOAL_OPTIONS, HealthProfile } from '../profile/profile.models';
 import { ProfileService } from '../profile/profile.service';
 
-/** Dashboard: daily calorie target if the profile is filled, otherwise a prompt to fill it. */
+/** Dashboard: daily target and today's meals, or prompts for the next setup step. */
 @Component({
   selector: 'app-home',
   imports: [RouterLink, CalorieSummary, DecimalPipe],
@@ -16,8 +18,13 @@ import { ProfileService } from '../profile/profile.service';
 export class Home implements OnInit {
   private readonly auth = inject(AuthService);
   private readonly profileService = inject(ProfileService);
+  private readonly planService = inject(PlanService);
+
+  protected readonly labels = MEAL_TYPE_LABELS;
 
   protected readonly profile = signal<HealthProfile | null>(null);
+  protected readonly today = signal<PlanDay | null>(null);
+  protected readonly hasPlan = signal(false);
   protected readonly loading = signal(true);
 
   ngOnInit(): void {
@@ -27,6 +34,14 @@ export class Home implements OnInit {
         this.loading.set(false);
       },
       error: () => this.loading.set(false),
+    });
+
+    this.planService.current().subscribe({
+      next: (plan) => {
+        this.hasPlan.set(plan !== null);
+        this.today.set(plan?.days.find((d) => d.date === todayIso()) ?? null);
+      },
+      error: () => {},
     });
   }
 

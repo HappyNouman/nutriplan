@@ -25,14 +25,46 @@
   margin: 0 0 16px;
 }
 
-.badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: var(--green-100);
-  color: var(--green-900);
-  font-size: 0.8rem;
+.today-meals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.today-meals li {
+  display: grid;
+  grid-template-columns: 82px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f8faf8;
+}
+
+.today-meals .type {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--green-700);
+}
+
+.meal-name {
   font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.kcal {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.day-sum {
+  margin: 14px 0 0;
+  color: var(--text-muted);
 }
 
 .setup {

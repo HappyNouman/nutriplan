@@ -20,14 +20,41 @@
         <app-calorie-summary [profile]="profile()!" />
       </article>
 
-      <article class="panel next">
-        <h2>This week's meal plan</h2>
-        <p class="muted">
-          Next we'll build a full week of meals that matches your
-          <strong>{{ profile()!.dailyCalories | number }} kcal</strong> target, plus a shopping list.
-        </p>
-        <span class="badge">Coming soon</span>
-      </article>
+      @if (today(); as day) {
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Today's meals</h2>
+            <a routerLink="/plan">Full week →</a>
+          </div>
+          <ul class="today-meals">
+            @for (meal of day.meals; track meal.mealType) {
+              <li>
+                <span class="type">{{ labels[meal.mealType] }}</span>
+                <span class="meal-name">{{ meal.name }}</span>
+                <span class="kcal">{{ meal.calories }} kcal</span>
+              </li>
+            }
+          </ul>
+          <p class="day-sum">
+            Total <strong>{{ day.calories | number }}</strong> of {{ profile()!.dailyCalories | number }} kcal
+          </p>
+        </article>
+      } @else {
+        <article class="panel next">
+          <h2>This week's meal plan</h2>
+          <p class="muted">
+            @if (hasPlan()) {
+              Your plan is ready. Open it to see every day of the week.
+            } @else {
+              Get a full week of meals that matches your
+              <strong>{{ profile()!.dailyCalories | number }} kcal</strong> target, in one click.
+            }
+          </p>
+          <a class="btn btn-primary cta" routerLink="/plan">
+            {{ hasPlan() ? 'View my plan' : 'Generate my plan' }}
+          </a>
+        </article>
+      }
     </section>
   } @else {
     <section class="panel setup">

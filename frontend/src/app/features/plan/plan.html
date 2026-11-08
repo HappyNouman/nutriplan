@@ -1,0 +1,82 @@
+<main class="page">
+  <header class="page-header head">
+    <div>
+      <h1>Weekly meal plan</h1>
+      @if (plan(); as p) {
+        <p>
+          Week of {{ p.weekStart | date: 'MMM d' }} · Target
+          <strong>{{ p.targetCalories | number }} kcal</strong> a day · Average
+          <strong>{{ weekAverage() | number }} kcal</strong>
+        </p>
+      } @else {
+        <p>Seven days of balanced meals, matched to your calorie target.</p>
+      }
+    </div>
+
+    @if (plan() && hasProfile()) {
+      <button class="btn btn-ghost regen" type="button" (click)="generate()" [disabled]="generating()">
+        {{ generating() ? 'Generating…' : '↻ Regenerate' }}
+      </button>
+    }
+  </header>
+
+  @if (error()) {
+    <div class="alert" role="alert">{{ error() }}</div>
+  }
+
+  @if (loading()) {
+    <p class="muted">Loading your plan…</p>
+  } @else if (!hasProfile()) {
+    <section class="panel empty">
+      <span class="empty-icon">📋</span>
+      <h2>First, set up your health profile</h2>
+      <p class="muted">We need your calorie target before we can plan your meals.</p>
+      <a class="btn btn-primary cta" routerLink="/profile">Set up my profile</a>
+    </section>
+  } @else if (!plan()) {
+    <section class="panel empty">
+      <span class="empty-icon">🥗</span>
+      <h2>Your week, planned in one click</h2>
+      <p class="muted">
+        We'll pick breakfast, lunch, dinner and a snack for every day, sized to your
+        <strong>{{ dailyCalories() | number }} kcal</strong> target.
+      </p>
+      <button class="btn btn-primary cta" type="button" (click)="generate()" [disabled]="generating()">
+        {{ generating() ? 'Generating your plan…' : 'Generate my plan' }}
+      </button>
+    </section>
+  } @else {
+    <section class="week" [class.busy]="generating()">
+      @for (day of plan()!.days; track day.day) {
+        <article class="day panel" [class.today]="day.date === today">
+          <header class="day-head">
+            <div>
+              <h2>{{ day.date | date: 'EEEE' }}</h2>
+              <span class="muted date">{{ day.date | date: 'MMM d' }}</span>
+            </div>
+            @if (day.date === today) {
+              <span class="today-badge">Today</span>
+            }
+          </header>
+
+          <div class="day-total">
+            <span><strong>{{ day.calories | number }}</strong> / {{ plan()!.targetCalories | number }} kcal</span>
+            <div class="bar"><div class="fill" [style.width.%]="fillPercent(day)"></div></div>
+            <span class="macros muted">P {{ day.proteinG }}g · C {{ day.carbsG }}g · F {{ day.fatG }}g</span>
+          </div>
+
+          <ul class="meals">
+            @for (meal of day.meals; track meal.mealType) {
+              <li class="meal">
+                <span class="type" [attr.data-type]="meal.mealType">{{ labels[meal.mealType] }}</span>
+                <strong class="name">{{ meal.name }}</strong>
+                <span class="desc muted">{{ meal.description }}</span>
+                <span class="meta">{{ servingsLabel(meal.servings) }} · {{ meal.calories }} kcal</span>
+              </li>
+            }
+          </ul>
+        </article>
+      }
+    </section>
+  }
+</main>

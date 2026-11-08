@@ -30,6 +30,11 @@ export const routes: Routes = [
         title: 'Health profile · NutriPlan',
         loadComponent: () => import('./features/profile/profile').then((m) => m.Profile),
       },
+      {
+        path: 'plan',
+        title: 'Meal plan · NutriPlan',
+        loadComponent: () => import('./features/plan/plan').then((m) => m.Plan),
+      },
     ],
   },
   { path: '**', redirectTo: '' },
