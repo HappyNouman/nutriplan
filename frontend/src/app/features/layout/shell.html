@@ -1,0 +1,16 @@
+<header class="topbar">
+  <a class="logo" routerLink="/">Nutri<span>Plan</span></a>
+
+  <nav>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+    <a routerLink="/profile" routerLinkActive="active">Health profile</a>
+  </nav>
+
+  <div class="user">
+    <span class="avatar">{{ initial() }}</span>
+    <span class="name">{{ auth.user()?.fullName }}</span>
+    <button class="btn btn-ghost" type="button" (click)="auth.logout()">Log out</button>
+  </div>
+</header>
+
+<router-outlet />

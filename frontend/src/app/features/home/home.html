@@ -1,33 +1,45 @@
-<header class="topbar">
-  <div class="logo">Nutri<span>Plan</span></div>
-  <div class="user">
-    <span class="avatar">{{ firstName().charAt(0) }}</span>
-    <span class="name">{{ auth.user()?.fullName }}</span>
-    <button class="btn btn-ghost" type="button" (click)="auth.logout()">Log out</button>
-  </div>
-</header>
-
-<main class="content">
-  <section class="hero">
+<main class="page">
+  <header class="page-header">
     <h1>Hi {{ firstName() }} 👋</h1>
-    <p>You're logged in. Your account is ready.</p>
-  </section>
+    @if (profile()?.complete) {
+      <p>Here's your plan for today. Goal: <strong>{{ goalLabel() }}</strong></p>
+    } @else {
+      <p>Welcome to NutriPlan. Let's get you set up.</p>
+    }
+  </header>
 
-  <section class="grid">
-    <article class="card">
-      <h2>Your account</h2>
-      <dl>
-        <dt>Name</dt>
-        <dd>{{ auth.user()?.fullName }}</dd>
-        <dt>Email</dt>
-        <dd>{{ auth.user()?.email }}</dd>
-      </dl>
-    </article>
+  @if (loading()) {
+    <p class="muted">Loading…</p>
+  } @else if (profile()?.complete) {
+    <section class="grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Your daily needs</h2>
+          <a routerLink="/profile">Edit profile</a>
+        </div>
+        <app-calorie-summary [profile]="profile()!" />
+      </article>
 
-    <article class="card next">
-      <h2>Next step</h2>
-      <p>Set up your health profile (age, height, weight, goal) so we can calculate your daily calories.</p>
-      <span class="badge">Coming soon</span>
-    </article>
-  </section>
+      <article class="panel next">
+        <h2>This week's meal plan</h2>
+        <p class="muted">
+          Next we'll build a full week of meals that matches your
+          <strong>{{ profile()!.dailyCalories | number }} kcal</strong> target, plus a shopping list.
+        </p>
+        <span class="badge">Coming soon</span>
+      </article>
+    </section>
+  } @else {
+    <section class="panel setup">
+      <span class="setup-icon">🥗</span>
+      <div>
+        <h2>Set up your health profile</h2>
+        <p class="muted">
+          Enter your age, height, weight, activity and goal. We'll calculate your daily calories and
+          macros in seconds.
+        </p>
+        <a class="btn btn-primary cta" routerLink="/profile">Set up my profile</a>
+      </div>
+    </section>
+  }
 </main>

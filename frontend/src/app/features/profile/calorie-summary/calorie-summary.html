@@ -1,0 +1,39 @@
+<div class="target">
+  <span class="label">Daily target</span>
+  <span class="kcal">{{ profile().dailyCalories | number }}</span>
+  <span class="unit">kcal / day</span>
+</div>
+
+<div class="macros">
+  @for (m of macros(); track m.name) {
+    <div class="macro">
+      <div class="macro-head">
+        <span class="dot" [style.background]="m.color"></span>
+        <span class="macro-name">{{ m.name }}</span>
+        <span class="macro-grams">{{ m.grams }} g</span>
+      </div>
+      <div class="bar">
+        <div class="fill" [style.width.%]="m.percent" [style.background]="m.color"></div>
+      </div>
+      <span class="percent">{{ m.percent }}% of calories</span>
+    </div>
+  }
+</div>
+
+<div class="stats">
+  <div class="stat">
+    <span class="stat-value">{{ profile().bmr | number }}</span>
+    <span class="stat-label">BMR</span>
+    <span class="stat-hint">Calories at rest</span>
+  </div>
+  <div class="stat">
+    <span class="stat-value">{{ profile().tdee | number }}</span>
+    <span class="stat-label">TDEE</span>
+    <span class="stat-hint">With your activity</span>
+  </div>
+  <div class="stat">
+    <span class="stat-value">{{ profile().bmi | number: '1.1-1' }}</span>
+    <span class="stat-label">BMI</span>
+    <span class="stat-hint">{{ bmiCategory() }}</span>
+  </div>
+</div>

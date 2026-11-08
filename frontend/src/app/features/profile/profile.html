@@ -1,0 +1,131 @@
+<main class="page">
+  <header class="page-header">
+    <h1>Health profile</h1>
+    <p>Tell us about yourself and we'll calculate how much you should eat every day.</p>
+  </header>
+
+  @if (loading()) {
+    <p class="muted">Loading your profile…</p>
+  } @else {
+    <div class="layout">
+      <form class="panel" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        @if (error()) {
+          <div class="alert" role="alert">{{ error() }}</div>
+        }
+
+        <!-- Gender -->
+        <fieldset>
+          <legend>Gender</legend>
+          <div class="segmented">
+            <label>
+              <input type="radio" formControlName="gender" value="FEMALE" />
+              <span>Female</span>
+            </label>
+            <label>
+              <input type="radio" formControlName="gender" value="MALE" />
+              <span>Male</span>
+            </label>
+          </div>
+          @if (invalid('gender')) {
+            <span class="field-error">Please choose one.</span>
+          }
+        </fieldset>
+
+        <!-- Body numbers -->
+        <div class="numbers">
+          <div class="field">
+            <label for="age">Age</label>
+            <div class="with-unit">
+              <input id="age" type="number" formControlName="age" min="15" max="100" [class.invalid]="invalid('age')" />
+              <span>years</span>
+            </div>
+            @if (invalid('age')) {
+              <span class="field-error">{{ rangeError('age') }}</span>
+            }
+          </div>
+
+          <div class="field">
+            <label for="height">Height</label>
+            <div class="with-unit">
+              <input id="height" type="number" formControlName="heightCm" min="100" max="250" [class.invalid]="invalid('heightCm')" />
+              <span>cm</span>
+            </div>
+            @if (invalid('heightCm')) {
+              <span class="field-error">{{ rangeError('heightCm') }}</span>
+            }
+          </div>
+
+          <div class="field">
+            <label for="weight">Weight</label>
+            <div class="with-unit">
+              <input id="weight" type="number" formControlName="weightKg" min="30" max="300" step="0.1" [class.invalid]="invalid('weightKg')" />
+              <span>kg</span>
+            </div>
+            @if (invalid('weightKg')) {
+              <span class="field-error">{{ rangeError('weightKg') }}</span>
+            }
+          </div>
+        </div>
+
+        <!-- Activity -->
+        <fieldset>
+          <legend>How active are you?</legend>
+          <div class="options">
+            @for (option of activityOptions; track option.value) {
+              <label class="option">
+                <input type="radio" formControlName="activityLevel" [value]="option.value" />
+                <span class="option-body">
+                  <strong>{{ option.label }}</strong>
+                  <small>{{ option.hint }}</small>
+                </span>
+              </label>
+            }
+          </div>
+          @if (invalid('activityLevel')) {
+            <span class="field-error">Please choose your activity level.</span>
+          }
+        </fieldset>
+
+        <!-- Goal -->
+        <fieldset>
+          <legend>What's your goal?</legend>
+          <div class="goals">
+            @for (option of goalOptions; track option.value) {
+              <label class="option goal">
+                <input type="radio" formControlName="goal" [value]="option.value" />
+                <span class="option-body">
+                  <span class="icon">{{ option.icon }}</span>
+                  <strong>{{ option.label }}</strong>
+                  <small>{{ option.hint }}</small>
+                </span>
+              </label>
+            }
+          </div>
+          @if (invalid('goal')) {
+            <span class="field-error">Please choose a goal.</span>
+          }
+        </fieldset>
+
+        <button class="btn btn-primary" type="submit" [disabled]="saving()">
+          {{ saving() ? 'Calculating…' : 'Save & calculate' }}
+        </button>
+      </form>
+
+      <aside class="panel results">
+        <h2>Your daily needs</h2>
+        @if (result(); as profile) {
+          @if (saved()) {
+            <div class="success" role="status">✓ Profile saved</div>
+          }
+          <app-calorie-summary [profile]="profile" />
+          <a class="btn btn-secondary go" routerLink="/">Go to dashboard →</a>
+        } @else {
+          <div class="empty">
+            <span class="empty-icon">🥗</span>
+            <p>Fill in the form and press <strong>Save &amp; calculate</strong> to see your calories and macros.</p>
+          </div>
+        }
+      </aside>
+    </div>
+  }
+</main>

@@ -15,10 +15,22 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/register/register').then((m) => m.Register),
   },
   {
+    // Everything below needs login and shares the top bar (Shell)
     path: '',
-    title: 'NutriPlan',
     canActivate: [authGuard],
-    loadComponent: () => import('./features/home/home').then((m) => m.Home),
+    loadComponent: () => import('./features/layout/shell').then((m) => m.Shell),
+    children: [
+      {
+        path: '',
+        title: 'Dashboard · NutriPlan',
+        loadComponent: () => import('./features/home/home').then((m) => m.Home),
+      },
+      {
+        path: 'profile',
+        title: 'Health profile · NutriPlan',
+        loadComponent: () => import('./features/profile/profile').then((m) => m.Profile),
+      },
+    ],
   },
   { path: '**', redirectTo: '' },
 ];

@@ -1,0 +1,181 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 22px;
+}
+
+legend {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* Hide the real radio buttons; the styled label is what the user clicks */
+input[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Gender: two-button switch */
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.segmented span {
+  display: block;
+  padding: 10px 26px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.segmented label + label span {
+  border-left: 1px solid var(--border);
+}
+
+.segmented input:checked + span {
+  background: var(--green-600);
+  color: #fff;
+}
+
+.segmented input:focus-visible + span {
+  outline: 3px solid var(--green-100);
+}
+
+/* Age / height / weight */
+.numbers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.with-unit {
+  position: relative;
+}
+
+.with-unit input {
+  width: 100%;
+  padding-right: 52px;
+}
+
+.with-unit span {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+/* Activity and goal cards */
+.options {
+  display: grid;
+  gap: 8px;
+}
+
+.goals {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.option {
+  cursor: pointer;
+}
+
+.option-body {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.option-body small {
+  color: var(--text-muted);
+}
+
+.option:hover .option-body {
+  border-color: var(--green-600);
+}
+
+.option input:checked + .option-body {
+  border-color: var(--green-600);
+  background: var(--green-50);
+  box-shadow: 0 0 0 1px var(--green-600);
+}
+
+.option input:focus-visible + .option-body {
+  box-shadow: 0 0 0 3px var(--green-100);
+}
+
+.goal .option-body {
+  align-items: center;
+  text-align: center;
+  padding: 14px 8px;
+}
+
+.icon {
+  font-size: 1.5rem;
+}
+
+/* Results column */
+.results {
+  position: sticky;
+  top: 88px;
+}
+
+.success {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--green-100);
+  color: var(--green-900);
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.go {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.empty {
+  text-align: center;
+  padding: 28px 8px;
+  color: var(--text-muted);
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+}
+
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .results {
+    position: static;
+  }
+}
+
+@media (max-width: 520px) {
+  .numbers,
+  .goals {
+    grid-template-columns: 1fr;
+  }
+}
