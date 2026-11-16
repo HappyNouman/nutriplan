@@ -35,6 +35,11 @@ export const routes: Routes = [
         title: 'Meal plan · NutriPlan',
         loadComponent: () => import('./features/plan/plan').then((m) => m.Plan),
       },
+      {
+        path: 'shopping',
+        title: 'Shopping list · NutriPlan',
+        loadComponent: () => import('./features/shopping/shopping').then((m) => m.Shopping),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

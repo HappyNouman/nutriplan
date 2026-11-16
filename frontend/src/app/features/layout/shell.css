@@ -36,6 +36,7 @@ nav a {
   border-radius: 8px;
   color: var(--text-muted);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 nav a:hover {
@@ -89,5 +90,12 @@ nav a.active {
   nav {
     order: 3;
     flex-basis: 100%;
+    overflow-x: auto; /* on very small phones the links scroll sideways instead of wrapping */
+    scrollbar-width: none;
+  }
+
+  nav a {
+    padding: 8px 10px;
+    font-size: 0.9rem;
   }
 }

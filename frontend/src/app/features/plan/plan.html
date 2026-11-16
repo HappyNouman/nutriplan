@@ -14,9 +14,12 @@
     </div>
 
     @if (plan() && hasProfile()) {
-      <button class="btn btn-ghost regen" type="button" (click)="generate()" [disabled]="generating()">
-        {{ generating() ? 'Generating…' : '↻ Regenerate' }}
-      </button>
+      <div class="actions">
+        <a class="btn btn-ghost regen" routerLink="/shopping">🛒 Shopping list</a>
+        <button class="btn btn-ghost regen" type="button" (click)="generate()" [disabled]="generating()">
+          {{ generating() ? 'Generating…' : '↻ Regenerate' }}
+        </button>
+      </div>
     }
   </header>
 

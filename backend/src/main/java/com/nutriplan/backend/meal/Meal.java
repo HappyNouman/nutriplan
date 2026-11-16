@@ -3,6 +3,9 @@ package com.nutriplan.backend.meal;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** One healthy meal (one serving) with its nutrition values. */
 @Entity
 @Table(name = "meals")
@@ -28,4 +31,14 @@ public class Meal {
     private int proteinG;
     private int carbsG;
     private int fatG;
+
+    /** What one serving is made of. Used to build the shopping list. */
+    @OneToMany(mappedBy = "meal", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<MealIngredient> ingredients = new ArrayList<>();
+
+    public void addIngredient(MealIngredient ingredient) {
+        ingredient.setMeal(this);
+        ingredients.add(ingredient);
+    }
 }

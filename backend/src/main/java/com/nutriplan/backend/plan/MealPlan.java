@@ -9,7 +9,9 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /** A user's meal plan for one week (Monday to Sunday). One plan per user per week. */
 @Entity
@@ -40,6 +42,12 @@ public class MealPlan {
     // cascade: saving the plan saves its items; orphanRemoval: items removed from the list are deleted
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlanItem> items = new ArrayList<>();
+
+    /** Shopping list items the user ticked this week (keys like "eggs:piece"). Stored in plan_checked_items. */
+    @ElementCollection
+    @CollectionTable(name = "plan_checked_items", joinColumns = @JoinColumn(name = "plan_id"))
+    @Column(name = "item_key", nullable = false)
+    private Set<String> checkedItems = new HashSet<>();
 
     public MealPlan(User user, LocalDate weekStart) {
         this.user = user;

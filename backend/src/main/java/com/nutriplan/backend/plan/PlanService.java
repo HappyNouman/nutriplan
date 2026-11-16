@@ -39,6 +39,7 @@ public class PlanService {
                 .orElseGet(() -> new MealPlan(user, weekStart));
 
         plan.getItems().clear();  // orphanRemoval deletes the old items
+        plan.getCheckedItems().clear();  // new meals = new shopping list, so start with nothing ticked
         plan.setTargetCalories(user.getDailyCalories());
         plan.setGeneratedAt(LocalDateTime.now());
         generator.generate(mealRepository.findAll(), user.getDailyCalories())
@@ -50,8 +51,12 @@ public class PlanService {
 
     @Transactional(readOnly = true)
     public Optional<PlanResponse> current(String email) {
-        return planRepository.findByUserAndWeekStart(findUser(email), currentWeekStart())
-                .map(PlanResponse::from);
+        return findCurrentPlan(email).map(PlanResponse::from);
+    }
+
+    /** This week's plan entity. Also used by the shopping list. Call it inside a transaction. */
+    public Optional<MealPlan> findCurrentPlan(String email) {
+        return planRepository.findByUserAndWeekStart(findUser(email), currentWeekStart());
     }
 
     private static LocalDate currentWeekStart() {

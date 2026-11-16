@@ -5,9 +5,18 @@
   gap: 16px;
 }
 
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
 .regen {
   white-space: nowrap;
-  margin-top: 6px;
+}
+
+a.regen:hover {
+  text-decoration: none;
 }
 
 /* Empty states */
@@ -181,7 +190,7 @@
     gap: 0;
   }
 
-  .regen {
+  .actions {
     margin: 0 0 16px;
   }
 }

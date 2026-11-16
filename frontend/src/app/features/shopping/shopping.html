@@ -1,0 +1,51 @@
+<main class="page">
+  <header class="page-header">
+    <h1>Shopping list</h1>
+    @if (list(); as l) {
+      <p>Everything you need for the week of {{ l.weekStart | date: 'MMM d' }}, in one list.</p>
+    } @else {
+      <p>Everything you need for your weekly plan, in one list.</p>
+    }
+  </header>
+
+  @if (error()) {
+    <div class="alert" role="alert">{{ error() }}</div>
+  }
+
+  @if (loading()) {
+    <p class="muted">Loading your shopping list…</p>
+  } @else if (!list()) {
+    <section class="panel empty">
+      <span class="empty-icon">🛒</span>
+      <h2>No meal plan this week yet</h2>
+      <p class="muted">Your shopping list is made from your weekly meal plan. Generate one first.</p>
+      <a class="btn btn-primary cta" routerLink="/plan">Go to my meal plan</a>
+    </section>
+  } @else {
+    <section class="panel progress-panel">
+      <p>
+        <strong>{{ list()!.checkedItems }}</strong> of {{ list()!.totalItems }} items in your basket
+      </p>
+      <div class="bar"><div class="fill" [style.width.%]="progress()"></div></div>
+    </section>
+
+    <div class="sections">
+      @for (section of list()!.sections; track section.category) {
+        <section class="panel section">
+          <h2>{{ categoryLabels[section.category] }}</h2>
+          <ul>
+            @for (item of section.items; track item.key) {
+              <li>
+                <label class="item" [class.checked]="item.checked">
+                  <input type="checkbox" [checked]="item.checked" (change)="toggle(item)" />
+                  <span class="name">{{ item.name }}</span>
+                  <span class="qty">{{ item.quantity }} {{ unitLabels[item.unit] }}</span>
+                </label>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+    </div>
+  }
+</main>
